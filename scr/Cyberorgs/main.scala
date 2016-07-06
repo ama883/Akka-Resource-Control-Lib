@@ -1,5 +1,5 @@
 ////////////////////////////////////////////////////////////////////////////////
-//  Description :   This is the main file. It descripes how to use Cyberorg through a simple example of resource allocation
+//  Description :   This is the main file. It describes how to use Cyberorg through a simple example of resource allocation
 //                  to messages 
 //  Author      :   Ahmed Abdel Moamen (ama883@mail.usask.ca)
 //  Date        :   2016/06/27
