@@ -1,3 +1,3 @@
 # Akka-Resource-Control-Lib
-A library for coordinating resource use of multi-tenant actor systems implemented for Scala/Akka
-main.scala shows how to use the resource control library using a simple example of resource allocation to two tenants. 
+
+There are several advantages multitenancy: the serving multiple tenants, each with its own privileges, from the same instance of a software system.  Although the naming convention in Actor systems -- actor names cannot be guessed -- naturally supports multitenancy, there is no explicit way of managing the resource competition between tenants.  There are models for coordinating resource use in Actor systems; however, they are difficult to implement for efficient implementations of Actors.  This library presents our efforts in implementing resource coordination support in Actor systems implemented using the Akka library. main.scala shows how to use the resource control library using a simple example of resource allocation to two tenants. 
