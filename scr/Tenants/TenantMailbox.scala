@@ -21,6 +21,7 @@ import java.util.concurrent.ConcurrentLinkedQueue
 import akka.dispatch.sysmsg.Suspend
 import akka.dispatch.sysmsg.Suspend
 import akka.dispatch.Dispatcher
+import scala.collection.mutable.PriorityQueue
 import java.util.ArrayList
 
 class CyberorgMailbox extends akka.dispatch.MailboxType {
@@ -33,7 +34,7 @@ class CyberorgMailbox extends akka.dispatch.MailboxType {
     new MessageQueue {
     
      // randomly access queue
-      private final val queue = new ArrayList[Envelope]()
+      private final val queue = new PriorityQueue[Envelope]()
 
       /**
      *  clean up the messages from the queue
@@ -56,7 +57,7 @@ class CyberorgMailbox extends akka.dispatch.MailboxType {
      */
       def enqueue(receiver: ActorRef, handle: Envelope): Unit =
       { 
-         queue.add(handle)
+         queue.enqueue(handle)
       }
       
        /**
@@ -64,32 +65,7 @@ class CyberorgMailbox extends akka.dispatch.MailboxType {
      */
       def dequeue(): Envelope = 
       {
-        var envelope: Envelope = null
-        // try to schedule the top message for execution if there is enough resource
-        // if not, move to the next message 
-        for( i <- 0 to queue.size - 1){
-          var envelope: Envelope =  queue.get(i)
-          envelope.message match  
-          {
-            case msg: TenantMessage => // case of a cyberorg message
-              {
-                   // check if the current message is schedullable
-                   if(TenantManagerObject.getInstance().isSchedullable(msg.getReceiver(), msg.getExecutionTime()))
-                   {
-                      queue.remove(i) // remove it from the queue
-                      return envelope  // return the message and exit and loop
-                   }
-              }
-            case _ => // case of a system message
-              {
-                if(queue.size() > 0)
-                {
-                  queue.remove(i)
-                }
-                return envelope
-              }
-          } // end match
-      } // end loop
+        var envelope: Envelope = queue.dequeue
         return envelope
     }
       
